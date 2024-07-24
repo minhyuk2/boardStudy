@@ -1,0 +1,87 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>게시글 리시트 페이지</title>-->
+<!--</head>-->
+<!--<style>-->
+<!--    .layout {-->
+<!--        width: 500px;-->
+<!--        margin: 40px auto 0;-->
+<!--    }-->
+
+<!--</style>-->
+<!--<body>-->
+<!--    <div class="layout">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th >글번호</th>-->
+<!--                    <th>제목</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--        <tbody>-->
+<!--            <tr th:each="board : ${list}">-->
+<!--                <td th:text="${board.id}">1</td>-->
+<!--                <td th:text="${board.title}">-->
+<!--                    <a  th:href="@{/board/view(id=${board.id})}"></a>-->
+<!--                </td>-->
+<!--            </tr>-->
+
+<!--        </tbody>-->
+
+<!--    </div>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트 페이지</title>
+    <style>
+        .layout {
+            width: 500px;
+            margin: 40px auto 0;
+        }
+
+        .board-table {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .board-item {
+            margin-bottom: 10px;
+        }
+
+        .board-item a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .board-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="board-table">
+        <div th:each="board : ${list}" class="board-item">
+            <span th:text="${board.id}">1</span> -
+            <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목</a>
+        </div>
+    </div>
+    <th:block th:each="page : ${numbers.sequnece(startPage,endPage)}">
+        <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${ page - 1},searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+        <strong th:if="${page == nowPage}"  th:text="${page}" style="color: red"></strong>
+    </th:block>
+    <form th:action="@{/board/list}" method="get">
+        <input type="text" name="searchKeyword">
+        <button type="submit">검색</button>
+    </form>
+</div>
+</body>
+</html>
